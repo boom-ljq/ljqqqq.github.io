@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wwww.lijiaqi.world","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="输出&#x2F;输入流: Reader Writer在 Java API 中，读取字节的源被称作 输入流，字节可以来自文件，网络连接或者内存中的数组。类似的，字节的目标流被称为 输出流。相比之下，Reader Writer分别用来读取和生成字符序列。 获取流对象从文件获取流的最简单方法就是使用静态方法。 12InputStream in &#x3D; Files.newInputStream(path);Output">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 正则表达式的应用">
+<meta property="og:url" content="http://wwww.lijiaqi.world/2018/10/19/Java-CH9/index.html">
+<meta property="og:site_name" content="ljqqqq">
+<meta property="og:description" content="输出&#x2F;输入流: Reader Writer在 Java API 中，读取字节的源被称作 输入流，字节可以来自文件，网络连接或者内存中的数组。类似的，字节的目标流被称为 输出流。相比之下，Reader Writer分别用来读取和生成字符序列。 获取流对象从文件获取流的最简单方法就是使用静态方法。 12InputStream in &#x3D; Files.newInputStream(path);Output">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-18T23:56:15.000Z">
+<meta property="article:modified_time" content="2020-02-02T13:38:18.741Z">
+<meta property="article:author" content="LI JIAQI">
+<meta property="article:tag" content="regex">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wwww.lijiaqi.world/2018/10/19/Java-CH9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Java 正则表达式的应用 | ljqqqq</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ljqqqq</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wwww.lijiaqi.world/2018/10/19/Java-CH9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LI JIAQI">
+      <meta itemprop="description" content="No one knows the site">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljqqqq">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 正则表达式的应用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-19 08:56:15" itemprop="dateCreated datePublished" datetime="2018-10-19T08:56:15+09:00">2018-10-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-02 22:38:18" itemprop="dateModified" datetime="2020-02-02T22:38:18+09:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="输出-输入流-Reader-Writer"><a href="#输出-输入流-Reader-Writer" class="headerlink" title="输出/输入流: Reader Writer"></a>输出/输入流: Reader Writer</h1><p>在 <em>Java API</em> 中，读取字节的源被称作 <strong>输入流</strong>，字节可以来自文件，网络连接或者内存中的数组。类似的，字节的目标流被称为 <strong>输出流</strong>。相比之下，Reader Writer分别用来读取和生成<em>字符</em>序列。</p>
+<h2 id="获取流对象"><a href="#获取流对象" class="headerlink" title="获取流对象"></a>获取流对象</h2><p>从文件获取流的最简单方法就是使用静态方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">InputStream in = Files.newInputStream(path);</span><br><span class="line">OutputStream out = Files.newOutputStream(path);</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>path</code> 是Path类的一个实例。</p>
+<h2 id="读取字节"><a href="#读取字节" class="headerlink" title="读取字节"></a>读取字节</h2><h2 id="写字节"><a href="#写字节" class="headerlink" title="写字节"></a>写字节</h2><h2 id="字符集编码"><a href="#字符集编码" class="headerlink" title="字符集编码"></a>字符集编码</h2><h2 id="文本输入"><a href="#文本输入" class="headerlink" title="文本输入"></a>文本输入</h2><h2 id="文本输出"><a href="#文本输出" class="headerlink" title="文本输出"></a>文本输出</h2><h2 id="读写二进制数据"><a href="#读写二进制数据" class="headerlink" title="读写二进制数据"></a>读写二进制数据</h2><h2 id="随机存取文件"><a href="#随机存取文件" class="headerlink" title="随机存取文件"></a>随机存取文件</h2><h2 id="内存映射文件"><a href="#内存映射文件" class="headerlink" title="内存映射文件"></a>内存映射文件</h2><h2 id="文件锁"><a href="#文件锁" class="headerlink" title="文件锁"></a>文件锁</h2><h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><h2 id="匹配一个或者多个"><a href="#匹配一个或者多个" class="headerlink" title="匹配一个或者多个"></a>匹配一个或者多个</h2><p>通常有两种使用<strong>正则表达式</strong>的方式：一种是想找出字符串是否匹配给定的表达式，另外一种是找出字符串中所有的匹配的结果。<br>第一种方式使用静态方法<code>matches</code>就可以:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String regex = <span class="string">"..."</span> <span class="comment">//里面是正则表达式</span></span><br><span class="line">CharSequence input = ...; </span><br><span class="line"><span class="keyword">if</span> (Pattern.matches(regex, input)) &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你想多次使用同一个正则表达式，则这样更有效：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pattern pattern=  Pattern.compile(regex);</span><br><span class="line">Matcher matcher = pattern.matcher(input);</span><br><span class="line"><span class="keyword">if</span> (matcher.matches()) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>匹配一个流或者集合中的元素，你可以使用一个<code>predicate</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pattern pattern = Pattern.compile(regex);</span><br><span class="line">Stream&lt;String&gt; strings = ...;</span><br><span class="line">Stream&lt;String&gt; result = strings.filter(pattern.asPredicate());</span><br></pre></td></tr></table></figure>
+
+<p>第二种方式, 找出一个字符串中所有的结果，可以使用一个循环：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Matcher matcher = pattern.matcher(input);</span><br><span class="line"><span class="keyword">while</span> (matcher.find()) &#123;</span><br><span class="line">    String match = matcher.group();</span><br><span class="line">    ...<span class="comment">//处理字符串</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h2><p>通常使用分组来提取匹配结果，考虑一下这样一个例子:<br><code>Nintendo Switch USD324.54</code></p>
+<p>要匹配每一个部分,可以使用这样的正则表达式 <code>(\p{Alnum}+\s+(\p{Alnum}+\s+)*)([A-Z]{3})([0-9.]*)</code> 来提取每一部分</p>
+<blockquote>
+<p>String text = matcher.group(n); //0代表整个输出</p>
+</blockquote>
+<p>如果需要提取各个部分的话，可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Matcher matcher = pattern.matcher(input);</span><br><span class="line"><span class="keyword">if</span> (matcher.matches()) &#123;</span><br><span class="line">    item = matcher.group(<span class="number">1</span>);</span><br><span class="line">    currency = matcher.group(<span class="number">3</span>);</span><br><span class="line">    price = matcher.group(<span class="number">4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了更加明晰的提取对，可以使用这样的正则表达式：<br><code>(?&lt;item&gt;\p{Alnum}+\s+(\p{Alnum}+\s+)*)(?&lt;currency&gt;[A-Z]{3})(?&lt;price&gt;[0-9.]*)</code><br>然后你就可以用这样的语句: </p>
+<blockquote>
+<p>item = matcher.group(“item”);</p>
+</blockquote>
+<h2 id="消除或替换匹配结果"><a href="#消除或替换匹配结果" class="headerlink" title="消除或替换匹配结果"></a>消除或替换匹配结果</h2><p>有些时候，你需要去根据匹配的的分隔符去做拆分在做别的处理，使用 <code>Pattern.split</code> 方法能自动完成这样的任务。</p>
+<blockquote>
+<p>Pattern commas = Pattern.compile(“\s<em>,\s</em>“); //匹配input中的逗号与空格<br>String[] tokens = commas.split(input);</p>
+</blockquote>
+<p>你可以选择延迟获取他们：</p>
+<blockquote>
+<p>Stream<String> tokens = commas.splitAsStream(input); </p>
+</blockquote>
+<p>如果你不关心匹配模式的预编译或者延迟获取，那么可以直接用 <code>String.split</code> 方法: </p>
+<blockquote>
+<p>String[] tokens = input.split(“\s<em>,\s</em>“); </p>
+</blockquote>
+<p>如何你想要替换匹配的结果，而不是分隔它们，你可以在 <code>matcher</code> 上调用 <code>replaceAll</code> 方法：</p>
+<blockquote>
+<p>Matcher matcher = commas.matcher(input);<br>String result = matcher.replaceAll(“ “); //用空格代替匹配结果</p>
+</blockquote>
+<p>同样的，如果你不关心匹配模式的预编译，可以直接用 <code>String</code> 类的 <code>replaceAll</code> 方法:</p>
+<blockquote>
+<p>String result = input.replaceAll(“\s<em>,\s</em>“, “ “); </p>
+</blockquote>
+<p>如果你在匹配文本中分组和标记，你就可以使用想要内容去对应替换。语法是 <code>$n</code> 或者 <code>${name}</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String result = <span class="string">"3:45"</span>.replaceAll(</span><br><span class="line">    <span class="string">"(\\d&#123;1,2&#125;):(?&lt;minutes&gt;\\d&#123;2&#125;)"</span>, </span><br><span class="line">    <span class="string">"$1 hours and $&#123;minutes&#125; minutes"</span>);</span><br><span class="line">    <span class="comment">//结果是 "3 hours and 45 minutes"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>替换的文本中可以用 <code>\</code> 来转义 <code>$</code> 和 <code>\</code>。</p>
+<h2 id="标记"><a href="#标记" class="headerlink" title="标记"></a>标记</h2><p>一些标记可以改变正则表达式的行为, 你可以在编译匹配模式之时制定标记: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Pattern.pattern = Pattern.compile(regex, </span><br><span class="line">    Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);</span><br></pre></td></tr></table></figure>
+<p>或者在匹配模式中指定标记: </p>
+<blockquote>
+<p>  String regex = “(?iU:expression)”   //i U 都是标记</p>
+</blockquote>
+<h1 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/18/Java-CH6/" rel="prev" title="Java 泛型编程">
+      <i class="fa fa-chevron-left"></i> Java 泛型编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/22/Java-CH7/" rel="next" title="Java 集合">
+      Java 集合 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#输出-输入流-Reader-Writer"><span class="nav-number">1.</span> <span class="nav-text">输出&#x2F;输入流: Reader Writer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取流对象"><span class="nav-number">1.1.</span> <span class="nav-text">获取流对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取字节"><span class="nav-number">1.2.</span> <span class="nav-text">读取字节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写字节"><span class="nav-number">1.3.</span> <span class="nav-text">写字节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集编码"><span class="nav-number">1.4.</span> <span class="nav-text">字符集编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本输入"><span class="nav-number">1.5.</span> <span class="nav-text">文本输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本输出"><span class="nav-number">1.6.</span> <span class="nav-text">文本输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读写二进制数据"><span class="nav-number">1.7.</span> <span class="nav-text">读写二进制数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机存取文件"><span class="nav-number">1.8.</span> <span class="nav-text">随机存取文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存映射文件"><span class="nav-number">1.9.</span> <span class="nav-text">内存映射文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件锁"><span class="nav-number">1.10.</span> <span class="nav-text">文件锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正则表达式"><span class="nav-number">2.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#匹配一个或者多个"><span class="nav-number">2.1.</span> <span class="nav-text">匹配一个或者多个</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组"><span class="nav-number">2.2.</span> <span class="nav-text">分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消除或替换匹配结果"><span class="nav-number">2.3.</span> <span class="nav-text">消除或替换匹配结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标记"><span class="nav-number">2.4.</span> <span class="nav-text">标记</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#序列化"><span class="nav-number">3.</span> <span class="nav-text">序列化</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LI JIAQI</p>
+  <div class="site-description" itemprop="description">No one knows the site</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LI JIAQI</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

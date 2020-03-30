@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wwww.lijiaqi.world","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本章要点：  在Java中，所有的方法必须在类中声明。非静态方法只能在该方法所属的类的对象上调用。 静态方法不通过对象调用。程序从静态的main方法开始执行。 Java 有8个基本类型。 数组和集合用来收集相同类型的元素。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 基本的编程结构">
+<meta property="og:url" content="http://wwww.lijiaqi.world/2018/10/15/Java-CH1/index.html">
+<meta property="og:site_name" content="ljqqqq">
+<meta property="og:description" content="本章要点：  在Java中，所有的方法必须在类中声明。非静态方法只能在该方法所属的类的对象上调用。 静态方法不通过对象调用。程序从静态的main方法开始执行。 Java 有8个基本类型。 数组和集合用来收集相同类型的元素。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-15T14:43:10.000Z">
+<meta property="article:modified_time" content="2020-02-02T13:38:18.741Z">
+<meta property="article:author" content="LI JIAQI">
+<meta property="article:tag" content="Hello Worlds">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wwww.lijiaqi.world/2018/10/15/Java-CH1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Java 基本的编程结构 | ljqqqq</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ljqqqq</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wwww.lijiaqi.world/2018/10/15/Java-CH1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LI JIAQI">
+      <meta itemprop="description" content="No one knows the site">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljqqqq">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 基本的编程结构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-15 23:43:10" itemprop="dateCreated datePublished" datetime="2018-10-15T23:43:10+09:00">2018-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-02 22:38:18" itemprop="dateModified" datetime="2020-02-02T22:38:18+09:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本章要点：</p>
+<ul>
+<li>在Java中，所有的<strong>方法</strong>必须在<strong>类</strong>中声明。<strong>非静态方法</strong>只能在该方法所属的<strong>类的对象</strong>上调用。</li>
+<li><strong>静态方法</strong>不通过对象调用。程序从静态的<code>main方法</code>开始执行。</li>
+<li><code>Java</code> 有8个<strong>基本类型</strong>。</li>
+<li><strong>数组</strong>和<strong>集合</strong>用来收集<strong>相同类型</strong>的元素。</li>
+</ul>
+<a id="more"></a> 
+
+<h1 id="第一个程序-Hello-World！"><a href="#第一个程序-Hello-World！" class="headerlink" title="第一个程序 Hello World！"></a>第一个程序 Hello World！</h1><p>让我们先来看看第一个程序：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一个Java程序</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello World!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Java是面向对象的语言。</strong> </p>
+<h1 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h1><p>最简单的Java类型被称为<strong>基本类型</strong>。其中四种是<strong>整型</strong>，两种是<strong>浮点类型</strong>，另外一种是用在字符串编码中的<strong>字符类型</strong>  <code>char</code>，还有一种是表示真假值的 <strong>布尔类型</strong> <code>boolean</code>。</p>
+<h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><p><strong>整型</strong>是没有小数部分的数字。<em>允许负值。</em>这四种<strong>整型</strong>分别是 <code>int</code>、<code>long</code>、<code>short</code>、<code>byte</code>。</p>
+<ul>
+<li><code>int</code>  4个字节<br>  （刚好超过20亿）</li>
+<li><code>long</code>  8个字节<br>  这个范围贼大。如果 <code>long类型</code> 还不够用，则使用 <code>BigInteger类</code>（这不是 <strong>基本类型</strong>）。</li>
+<li><code>short</code>  2个字节<br>  -32,768 ~ 32,767</li>
+<li><code>byte</code>  1个字节<br>  -128 ~ 127</li>
+</ul>
+<p>常量 <code>Integer.MIN_VALUE</code> 和 <code>Integer.MAX_VALUE</code> 分别表示最小和最大的整数。同样的，<code>Long</code>、<code>Short</code>、<code>Byte</code> 也有 <code>MIN_VALUE</code> 和 <code>MAX_VALUE</code> 常量。</p>
+<p>使用 <code>long</code> 变量值时带上 <code>L</code> 后缀（例如，<code>400000000L</code>），<code>byte</code> 或者 <code>short</code> 变量值在使用时没有这种语法。采用<strong>强制转换*</strong>（例如，<code>(byte)127</code>）。</p>
+<p><strong>十六进制</strong>数值使用 <code>0x</code> 前缀（例如，<code>0xCAFEBABE</code>），<strong>二进制</strong> 数值使用 <code>0b</code> 前缀（例如，<code>0b1001</code> 就是9），<br><strong>八进制</strong> 使用 <code>0</code> 作为前缀（例如，<code>011</code> 是9），这会令人产生误解，最好不使用。</p>
+<p>你可以给数字添加下划线。例如 <code>1_000_000</code>，<code>0b1111_0100_0010_0100_0000</code> 都可以表示100万。添加下划线让阅读更加容易，Java编译器会直接删除它们。</p>
+<p>Java中的 <strong>整型</strong> 是有符号的。但是如果你使用的值不可能是 <strong>负数</strong>，并且实际需要额外一个比特，那么你可以使用 将数值翻译成无符号类型 的方法。例如，将范围为-128<del>127的 <code>byte</code> 类型值用作0</del>255的值，并且进行一些源于二进制运算的操作，例如加法和减法。对于其他操作，可以调用 <code>Byte.toUnsignedInt(b)方法</code>，可以获得0~255的整数值。</p>
+<h2 id="浮点类型"><a href="#浮点类型" class="headerlink" title="浮点类型"></a>浮点类型</h2><p><strong>浮点类型</strong>是指由分数的数字。<em>允许负值</em>。这两种 <strong>浮点类型</strong> 分别是 <code>float</code> 和 <code>double</code>。</p>
+<ul>
+<li><code>float</code>  4个字节<br>  6~7位有效的小数位数</li>
+<li><code>double</code>  8个字节<br>  15位有效的小数位数。现在默认使用 <code>double</code> 精度的数字作为 <strong>浮点类型</strong> 的数值。</li>
+</ul>
+<p>一些特殊的 <strong>浮点值</strong> 有: <code>Double.POSITIVE_INFINITY</code> 代表 <strong>正无穷大</strong>，<code>Double.NEGATIVE_INFINITY</code> 代表 <strong>负无穷大</strong>，<code>DOUBLE.NaN</code> 代表 <strong>非数值</strong>。<br>（例如，1.0 / 0.0 的结果就是 <strong>正无穷大</strong>，0.0 / 0.0 或者 负数的平方根 就会产生 <strong>非数值</strong> <code>NaN</code>）<br>所有 <strong>非数值</strong> 都被认为是彼此不同的。因此你必须调用 <code>Double.isNan()</code> 来检查数值是否为 <code>NaN</code>。 你也可以用方法 <code>Double.isInfinite</code> 来检查数值是否为 <strong>正负无穷大</strong>.</p>
+<p><code>float类型</code> 有个 <code>F</code> 后缀（例如，<code>3.14F</code>）。没有 <code>F</code> 后缀的 <strong>浮点类型</strong> 默认为 <code>double类型</code>。你可以选择使用 <code>D</code> 作为 <code>double类型</code> 的后缀（例如，<code>3.14D</code>）。</p>
+<p><strong>浮点数</strong> 不适合做金融运算，因为有些 <strong>浮点数</strong> 在计算机中没有精确的二进制表示（例如 9/10 打印结果为 0.8999999999999999，并非0.9）。如果你需要精确而无舍入误差的数字计算，则可以使用 <code>BigDecimal类</code>。</p>
+<h2 id="char型"><a href="#char型" class="headerlink" title="char型"></a>char型</h2><p><strong>char型</strong> 描述了Java使用的UTF-16字符编码中的”编码单元”。你可以不会经常使用 <code>char类型</code>。编码单元可以用<strong>十六进制</strong>表示，使用前缀<code>\u</code>。例如，<code>\u004A</code>和<code>J</code>相同。<br>特殊编码<code>\n</code>、<code>\r</code>、<code>\t</code>、<code>\b</code>、代表<strong>换行</strong>、<strong>回车</strong>、<strong>tab</strong>和<strong>退格</strong>。反斜杠 <code>\</code> 作为<strong>转义符</strong>。</p>
+<h2 id="布尔型"><a href="#布尔型" class="headerlink" title="布尔型"></a>布尔型</h2><p><strong>布尔型</strong>有两种值。<code>true</code> 和 <code>false</code>。<br>在 Java 中，<strong>布尔类型</strong>不是数字类型，布尔值和整数<strong>0</strong>和<strong>1</strong>没有关系。</p>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p><strong>Java是强类型语言。</strong> 变量值只能是某个具体类型的值。当你声明变量时，需要指定变量的<strong>类型</strong>，<strong>名称</strong>及一个<strong>可选的初始值</strong>。</p>
+<h2 id="变量的声明"><a href="#变量的声明" class="headerlink" title="变量的声明"></a>变量的声明</h2><h2 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h2><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p><code>static</code> <code>final</code></p>
+<h1 id="算数操作"><a href="#算数操作" class="headerlink" title="算数操作"></a>算数操作</h1><h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2><h2 id="基本运算"><a href="#基本运算" class="headerlink" title="基本运算"></a>基本运算</h2><h2 id="数学方法"><a href="#数学方法" class="headerlink" title="数学方法"></a>数学方法</h2><h2 id="数字类型转换"><a href="#数字类型转换" class="headerlink" title="数字类型转换"></a>数字类型转换</h2><h2 id="关系和逻辑操作符"><a href="#关系和逻辑操作符" class="headerlink" title="关系和逻辑操作符"></a>关系和逻辑操作符</h2><h2 id="大数"><a href="#大数" class="headerlink" title="大数"></a>大数</h2><p>Java的<code>Math包</code>中提供了<code>BigDecimal</code>和<code>BigInteger</code>两类。<code>BigInteger</code>实现了任意精度<strong>整数</strong>的计算，<code>BigDecimal</code>对<strong>浮点数</strong>有同样的实现。</p>
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><h2 id="字符串连接"><a href="#字符串连接" class="headerlink" title="字符串连接"></a>字符串连接</h2><p>使用操作符<code>+</code>可以将两个字符串连接起来。</p>
+<blockquote>
+<p>String firstName = “LI”;<br>String fullName = firstName + “KAKI”; </p>
+</blockquote>
+<p>你也可以将字符串和另一个值连接在一起，该值转换为字符串。</p>
+<blockquote>
+<p>int age = 23;<br>String output = age + “years”; </p>
+</blockquote>
+<p>使用<code>join()</code>方法可以将几个以分隔符隔开的字符连接起来.</p>
+<blockquote>
+<p>String names = String.join(“, “, “Peter”, “Amy”, “Lee”); </p>
+</blockquote>
+<p>如果你值想要最终的结果，那么连接大量的字符就有些效率低下了。这种情况下，最好使用<code>StringBulider()</code>方法: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">StringBulider sb = <span class="keyword">new</span> StringBulider(); </span><br><span class="line">sb.append(...); </span><br><span class="line">sb.append(...);</span><br><span class="line">...</span><br><span class="line">Stirng result = sb.toString();</span><br></pre></td></tr></table></figure>
+<h2 id="字符串拆开"><a href="#字符串拆开" class="headerlink" title="字符串拆开"></a>字符串拆开</h2><p>要将字符串拆开，你可以使用 <code>subString()</code> 方法。例如: </p>
+<blockquote>
+<p>String greeting = “Hello World”;<br>String w = greeting.subString(7,12); //w现在为 “World”</p>
+</blockquote>
+<p>如果你想用分隔符来将字符串中的所有子字符串提取出来，可以使用 <code>split()</code> 方法，分隔符可以是 <strong>正则表达式</strong>。</p>
+<blockquote>
+<p>String names = “Peter, Amy, Lee”;<br>String result = names.split(“, “); </p>
+</blockquote>
+<h2 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h2><p>请不要用 <code>==</code> 来比较字符串，而是使用 <code>equal()</code> 方法。</p>
+<h2 id="数字与字符串转换"><a href="#数字与字符串转换" class="headerlink" title="数字与字符串转换"></a>数字与字符串转换</h2><p>将<strong>整数</strong>转换为字符串，可以调用静态方法 <code>Integer.toString()</code></p>
+<blockquote>
+<p>int n = 10;<br>String str = Integer.toString(n); </p>
+</blockquote>
+<p>该方法也可以支持两个参数，可以指定<strong>基数</strong>，范围2~36。</p>
+<blockquote>
+<p>str = Integer.toString(n, 2); //str现在为”1010”</p>
+</blockquote>
+<p>有一种更加简单的方法，但是效率稍低。</p>
+<blockquote>
+<p>str = “” + n; </p>
+</blockquote>
+<p>相反地，将包含整数的字符串转换成数字，使用 <code>Integer.parseInt()</code> 方法:</p>
+<blockquote>
+<p>String str = “1010”;<br>n = Integer.parseInt(str); //n现在为”1010” </p>
+</blockquote>
+<p>这个方法也支持两个参数</p>
+<blockquote>
+<p>n = Integer.parseInt(str, 2); //n现在为”10” </p>
+</blockquote>
+<p>对于 <strong>浮点数</strong>，可以使用<code>Double.toString()</code> 方法和 <code>Double.parseDouble()</code> 方法</p>
+<h1 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h1><p>调用 <code>System.out.println()</code> 时，输出发送到”标准输出流”，然后再窗口中显示出来。但是从”标准输入流”读取并不是那么简单，因为相应的 <code>System.in</code> 对象只能读取<strong>单个字节</strong>，要读取字符串和数字，构造一个依附到<code>System.in</code>的<code>Scanner</code>。</p>
+<blockquote>
+<p>Scanner in = new Scanner(System.in); </p>
+</blockquote>
+<p><code>nextLine()</code> 方法从输入读取一行。</p>
+<blockquote>
+<p>String input = in.nextLine(); //next()方法会过滤空格，enter，tab，并且其是为结束符。<br>int age = in.nextInt();<br>double salary = in.nextDouble(); </p>
+</blockquote>
+<p>使用<code>hasNextLine()</code>、<code>hasNext()</code>、<code>hasNextInt()</code>、<code>hasNextDouble()</code> 可以检查时候有另外一个行，另外一个单词，整数或者浮点数可以读取。</p>
+<p><code>Scanner类</code> 位于<code>java.util</code>包中。要使用该类，可以在文件中引用。</p>
+<blockquote>
+<p>import java.util.Scanner</p>
+</blockquote>
+<h2 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h2><p>以<code>%</code>字符开始的每一个<strong>格式说明符</strong>都会被相应的参数替代。<strong>转换字符</strong> 说明了要被格式化的值所属的类型: <code>f</code> 是浮点数字，<code>s</code> 是字符串，<code>d</code> 是十进制整数。</p>
+<blockquote>
+<p>System.out.printf(“%8.2f”, 1000.0 / 3.0); //宽度为 8，小数点后精度为 2，类型为浮点数。</p>
+</blockquote>
+<h1 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h1><p>实现<strong>分支</strong>和<strong>循环</strong>。</p>
+<h2 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h2><h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><h2 id="局部变量作用域"><a href="#局部变量作用域" class="headerlink" title="局部变量作用域"></a>局部变量作用域</h2><p><strong>局部变量的作用于从声明变量处起到封闭块的结束.</strong> </p>
+<h1 id="数组和数组列表"><a href="#数组和数组列表" class="headerlink" title="数组和数组列表"></a>数组和数组列表</h1><p>数组是手机相同类型的多个元素的基本编程结构。Java内置了数组类型，并且也提供了根据需求随时增长或缩减的<code>ArrayList类</code>。</p>
+<h2 id="使用数组"><a href="#使用数组" class="headerlink" title="使用数组"></a>使用数组</h2><h2 id="构造数组"><a href="#构造数组" class="headerlink" title="构造数组"></a>构造数组</h2><p>使用<code>new</code>操作符去构造数组时，用默认值填充数组。<br>数字类型（包括<code>char</code>类型）的数组用0填充。<br><code>Boolean</code>类型的数组用<code>false</code>填充。<br>对象数组用<strong>空引用</strong>填充。</p>
+<h2 id="数组列表"><a href="#数组列表" class="headerlink" title="数组列表"></a>数组列表</h2><p>数组一旦构造后，数组的长度就不能被改变。为了解决这个问题，可以使用<code>ArrayList类</code>。<br>数组列表和数组的语法完全不同，数组列表是一个类，你可以使用构造实例和调用方法的语法。</p>
+<h2 id="基本类型包装类"><a href="#基本类型包装类" class="headerlink" title="基本类型包装类"></a>基本类型包装类</h2><p><strong>泛型类</strong>不能使用<strong>基本类型</strong>作为类型参数。解决办法是使用<strong>包装类</strong>。</p>
+<h2 id="增强的for循环"><a href="#增强的for循环" class="headerlink" title="增强的for循环"></a>增强的for循环</h2><h2 id="数组和数组列表的复制"><a href="#数组和数组列表的复制" class="headerlink" title="数组和数组列表的复制"></a>数组和数组列表的复制</h2><h2 id="数组算法"><a href="#数组算法" class="headerlink" title="数组算法"></a>数组算法</h2><p>你可以用 <code>fill()</code> 方法来填充数组和数组列表。</p>
+<blockquote>
+<p>Arrays.fill(numbers, 0); //int[] 数组填充<br>Collection.fill(words, “”); //ArrayList<String>  数组列表填充</p>
+</blockquote>
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><p>所有Java程序的 <code>main</code> 方法都有一个字符串数组的参数:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JavaTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (String str: args) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"-h"</span>.equals(str)) str = <span class="string">"Hello"</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"-g"</span>.equals(str)) str = <span class="string">"Goodbye"</span>;</span><br><span class="line">            System.out.println(str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果这个程序用 <code>java JavaTest -g</code> 来调用<br>那么会输出 <code>Goodbye</code>。</p>
+<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>Java的多维数组是通过数组的数组实现的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] square = &#123;</span><br><span class="line">        &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;,</span><br><span class="line">        &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> &#125;,</span><br><span class="line">        &#123; <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> element = square[<span class="number">1</span>][<span class="number">1</span>]; <span class="comment">//element现在是5</span></span><br></pre></td></tr></table></figure>
+<p>接下来，我们来设计一个杨辉三角的多维数组</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] triangle(<span class="keyword">int</span> n)&#123;</span><br><span class="line">    <span class="comment">//声明一个多维数组,行数为n</span></span><br><span class="line">    <span class="keyword">int</span>[][] triangle = <span class="keyword">new</span> <span class="keyword">int</span>[n][];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="comment">//填充边框为1 的部分</span></span><br><span class="line">        triangle[i] = <span class="keyword">new</span> <span class="keyword">int</span>[i + <span class="number">1</span>];</span><br><span class="line">        triangle[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        triangle[i][i] = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//进行计算</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; j++)&#123;</span><br><span class="line">            triangle[i][j] = triangle[i-<span class="number">1</span>][j-<span class="number">1</span>] + triangle[i-<span class="number">1</span>][j]; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> triangle;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接下来，我们可以用两个增强的for循环去打印出来:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prinf</span><span class="params">(<span class="keyword">int</span>[][] square)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span>[] row: square) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> element: row) &#123;</span><br><span class="line">            System.out.printf(<span class="string">"%4d"</span>, element);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以这样写:</p>
+<blockquote>
+<p>System.out.println(Arrays.deepToString(triangle(5)));</p>
+</blockquote>
+<h1 id="功能分解"><a href="#功能分解" class="headerlink" title="功能分解"></a>功能分解</h1><h2 id="静态方法的声明与调用"><a href="#静态方法的声明与调用" class="headerlink" title="静态方法的声明与调用"></a>静态方法的声明与调用</h2><h2 id="数组参数与返回值"><a href="#数组参数与返回值" class="headerlink" title="数组参数与返回值"></a>数组参数与返回值</h2><h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><p>有些方法允许调用者提供数目可变的参数。例如，编写一个求平均数的方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">average</span><span class="params">(<span class="keyword">double</span>..。values)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">double</span> v: values) sum += v;</span><br><span class="line">    <span class="keyword">if</span> (values.length != <span class="number">0</span>) <span class="keyword">return</span> sum / values.length;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/15/Java-CH5/" rel="prev" title="Java 异常 断言和日志处理">
+      <i class="fa fa-chevron-left"></i> Java 异常 断言和日志处理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/18/Java-CH6/" rel="next" title="Java 泛型编程">
+      Java 泛型编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一个程序-Hello-World！"><span class="nav-number">1.</span> <span class="nav-text">第一个程序 Hello World！</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本类型"><span class="nav-number">2.</span> <span class="nav-text">基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整型"><span class="nav-number">2.1.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浮点类型"><span class="nav-number">2.2.</span> <span class="nav-text">浮点类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#char型"><span class="nav-number">2.3.</span> <span class="nav-text">char型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布尔型"><span class="nav-number">2.4.</span> <span class="nav-text">布尔型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量"><span class="nav-number">3.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量的声明"><span class="nav-number">3.1.</span> <span class="nav-text">变量的声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#名称"><span class="nav-number">3.2.</span> <span class="nav-text">名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">3.3.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常量"><span class="nav-number">3.4.</span> <span class="nav-text">常量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算数操作"><span class="nav-number">4.</span> <span class="nav-text">算数操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#赋值"><span class="nav-number">4.1.</span> <span class="nav-text">赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本运算"><span class="nav-number">4.2.</span> <span class="nav-text">基本运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数学方法"><span class="nav-number">4.3.</span> <span class="nav-text">数学方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数字类型转换"><span class="nav-number">4.4.</span> <span class="nav-text">数字类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关系和逻辑操作符"><span class="nav-number">4.5.</span> <span class="nav-text">关系和逻辑操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大数"><span class="nav-number">4.6.</span> <span class="nav-text">大数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-number">5.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串连接"><span class="nav-number">5.1.</span> <span class="nav-text">字符串连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串拆开"><span class="nav-number">5.2.</span> <span class="nav-text">字符串拆开</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串比较"><span class="nav-number">5.3.</span> <span class="nav-text">字符串比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数字与字符串转换"><span class="nav-number">5.4.</span> <span class="nav-text">数字与字符串转换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输入与输出"><span class="nav-number">6.</span> <span class="nav-text">输入与输出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化输出"><span class="nav-number">6.1.</span> <span class="nav-text">格式化输出</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#控制流"><span class="nav-number">7.</span> <span class="nav-text">控制流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分支"><span class="nav-number">7.1.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环"><span class="nav-number">7.2.</span> <span class="nav-text">循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量作用域"><span class="nav-number">7.3.</span> <span class="nav-text">局部变量作用域</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数组和数组列表"><span class="nav-number">8.</span> <span class="nav-text">数组和数组列表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用数组"><span class="nav-number">8.1.</span> <span class="nav-text">使用数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造数组"><span class="nav-number">8.2.</span> <span class="nav-text">构造数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组列表"><span class="nav-number">8.3.</span> <span class="nav-text">数组列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本类型包装类"><span class="nav-number">8.4.</span> <span class="nav-text">基本类型包装类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增强的for循环"><span class="nav-number">8.5.</span> <span class="nav-text">增强的for循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组和数组列表的复制"><span class="nav-number">8.6.</span> <span class="nav-text">数组和数组列表的复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组算法"><span class="nav-number">8.7.</span> <span class="nav-text">数组算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行参数"><span class="nav-number">8.8.</span> <span class="nav-text">命令行参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多维数组"><span class="nav-number">8.9.</span> <span class="nav-text">多维数组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#功能分解"><span class="nav-number">9.</span> <span class="nav-text">功能分解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法的声明与调用"><span class="nav-number">9.1.</span> <span class="nav-text">静态方法的声明与调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组参数与返回值"><span class="nav-number">9.2.</span> <span class="nav-text">数组参数与返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变参数"><span class="nav-number">9.3.</span> <span class="nav-text">可变参数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LI JIAQI</p>
+  <div class="site-description" itemprop="description">No one knows the site</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LI JIAQI</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

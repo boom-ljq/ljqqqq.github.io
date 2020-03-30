@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wwww.lijiaqi.world","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本章要点:  子类可以继承或者覆盖父类的方法。 使用关键字 super 来调用父类方法或者构造函数。 final 方法 不可能被覆盖，final 类 不能被继承。 abstract 方法 没有实现，abstract 类 不能被实例化。 子类方法可以访问子类的受保护成员，但仅适用于同一个子类的对象。 所有类都是 Object 类 的子类，它提供了 toString、equals、hasCode 和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 继承与反射">
+<meta property="og:url" content="http://wwww.lijiaqi.world/2018/10/15/Java-CH4/index.html">
+<meta property="og:site_name" content="ljqqqq">
+<meta property="og:description" content="本章要点:  子类可以继承或者覆盖父类的方法。 使用关键字 super 来调用父类方法或者构造函数。 final 方法 不可能被覆盖，final 类 不能被继承。 abstract 方法 没有实现，abstract 类 不能被实例化。 子类方法可以访问子类的受保护成员，但仅适用于同一个子类的对象。 所有类都是 Object 类 的子类，它提供了 toString、equals、hasCode 和">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-15T00:13:21.000Z">
+<meta property="article:modified_time" content="2020-02-02T13:38:18.741Z">
+<meta property="article:author" content="LI JIAQI">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wwww.lijiaqi.world/2018/10/15/Java-CH4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Java 继承与反射 | ljqqqq</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ljqqqq</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wwww.lijiaqi.world/2018/10/15/Java-CH4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LI JIAQI">
+      <meta itemprop="description" content="No one knows the site">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljqqqq">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 继承与反射
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-15 09:13:21" itemprop="dateCreated datePublished" datetime="2018-10-15T09:13:21+09:00">2018-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-02 22:38:18" itemprop="dateModified" datetime="2020-02-02T22:38:18+09:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本章要点:</p>
+<ul>
+<li><strong>子类</strong>可以继承或者覆盖<strong>父类</strong>的方法。</li>
+<li>使用关键字 <code>super</code> 来调用父类方法或者构造函数。</li>
+<li><code>final</code> 方法 不可能被覆盖，<code>final</code> 类 不能被继承。</li>
+<li><code>abstract</code> 方法 没有实现，<code>abstract</code> 类 不能被实例化。</li>
+<li>子类方法可以访问子类的<strong>受保护成员</strong>，但仅适用于<strong>同一个子类的对象</strong>。</li>
+<li>所有<strong>类</strong>都是 <code>Object</code> 类 的子类，它提供了 <code>toString</code>、<code>equals</code>、<code>hasCode</code> 和 <code>clone</code> 方法。</li>
+<li>所有<strong>枚举类型</strong>都是 <code>Enum</code> 类 的子类，它提供了 <code>toString</code>、<code>valueOf</code> 和 <code>compareTo</code> 方法。</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="Extend-继承"><a href="#Extend-继承" class="headerlink" title="Extend 继承"></a>Extend 继承</h1><ul>
+<li>子类可以<strong>继承</strong>或者<strong>覆盖</strong>父类的方法。</li>
+<li>使用关键字 <code>super</code> 来调用<strong>父类</strong>的方法或者构造函数。</li>
+<li><code>final</code> 方法 不能被覆盖，<code>final</code> 类 不能被继承。</li>
+<li><code>abstract</code> 方法 没有实现，<code>abstract</code> 类 不能被实例化。</li>
+<li>子类方法可以访问子类的<strong>受保护成员</strong>，但仅适用于同一个子类的对象。</li>
+</ul>
+<h2 id="父类与子类"><a href="#父类与子类" class="headerlink" title="父类与子类"></a>父类与子类</h2><p>关键字 <code>extends</code> 表示你正在从一个现有类派生出一个新类。这个已有类被称为<strong>父类</strong>，新类被称为<strong>子类</strong>。术语 <strong>父/子类</strong> 来自<strong>集合论</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword">extends</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="comment">//added fields</span></span><br><span class="line">    <span class="comment">//added or overriding methods</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="定义和继承子类方法"><a href="#定义和继承子类方法" class="headerlink" title="定义和继承子类方法"></a>定义和继承子类方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword">extends</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> bonus;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBonus</span><span class="params">(<span class="keyword">double</span> bonus)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.bonus = bonus;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样一来，<code>Manager</code> 类 不仅可以使用 <code>setBonus()</code> 方法，也可以使用来自 <code>Employee</code> 类 的<strong>非私有方法</strong>了。</p>
+<h2 id="方法覆盖"><a href="#方法覆盖" class="headerlink" title="方法覆盖"></a>方法覆盖</h2><p>有些时候，一个<strong>父类</strong>的方法在<strong>子类</strong>中需要修改。所以<strong>继承</strong>这个方法是不合适的，你需要<strong>覆盖</strong>这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword">extends</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getSalary</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getSalary() + bonus; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不同于 <code>this</code> 引用，关键字 <code>super</code> 不是对象的引用，而是绕过<strong>动态查找方法</strong>并调用特定方法的指令。</p>
+<p>在 <strong>覆盖</strong> 一个方法的时候，你必须仔细地匹配准确的参数类型。你也可以用 <code>@Override</code> 注解来标记这个新方法。</p>
+<h2 id="子类的构造"><a href="#子类的构造" class="headerlink" title="子类的构造"></a>子类的构造</h2><p><strong>子类</strong>的构造函数无法访问<strong>父类</strong>的私有变量，因此它必须通过父类的构造函数来初始化它们。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword">extends</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="comment">//构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Manager</span><span class="params">(String name，<span class="keyword">double</span> salary)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(name，salary);</span><br><span class="line">        bonus = <span class="number">0</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>父类的<strong>构造函数调用</strong>必须是子类的构造函数中的<strong>第一条语句</strong>。如果你忽略了调用父类构造函数，那么父类必须有一个没有参数的，被隐式调用的构造函数。</p>
+<h2 id="父类赋值"><a href="#父类赋值" class="headerlink" title="父类赋值"></a>父类赋值</h2><p>将<strong>子类</strong>对象赋值给<strong>父类</strong>对象是合法的。</p>
+<blockquote>
+<p>Manager boss = new Manager(…);<br>Employee emp1 = boss; </p>
+</blockquote>
+<p>在<strong>父类</strong>变量上调用方法时，虚拟机会查看变量的实际类型，并且定位方法的版本。这个过程被称为<strong>动态方法查找</strong>。</p>
+<blockquote>
+<p>double salary = emp1.getSalary();  //调用的是Manager类的方法</p>
+</blockquote>
+<p><strong>父类赋值</strong>同样可以用于数组赋值，在技术上Java数组是<strong>协变</strong>的，但这也可能会导致错误的发生。</p>
+<h2 id="转换"><a href="#转换" class="headerlink" title="转换"></a>转换</h2><p>使用 <code>instanceof</code> 操作符，可以判断父类引用是否可以转化为子类引用，这样在运行时就不会因为不兼容而导致报错。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (emp1 <span class="keyword">instanceof</span> Manager) &#123;</span><br><span class="line">    Manager mgr = (Manager) emp1; </span><br><span class="line">    mgr.setBonus(<span class="number">10_000</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="final方法和类"><a href="#final方法和类" class="headerlink" title="final方法和类"></a>final方法和类</h2><p>当你将一个方法声明为 <code>final</code> 时，子类不可以<strong>覆盖</strong>它。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有时，你可能想要阻止其他人<strong>继承</strong>你的类。你需要在类的定义中使用 <code>final</code> 修饰符。例如，在Java API中的 <code>URL</code> 类、<code>String</code> 类和 <code>LocalTime</code> 类。</p>
+<h2 id="抽象方法和类"><a href="#抽象方法和类" class="headerlink" title="抽象方法和类"></a>抽象方法和类</h2><p>一个类可以定义没有实现的方法，强迫子类去实现方法。这样的方法以及其所属的类被称为<strong>抽象方法</strong>和<strong>抽象类</strong>，必须用 <code>abstract</code> 修饰符标记。通常会将非常通用的类设计成<strong>抽象类</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不同于<strong>接口</strong>，<strong>抽象类</strong>可以拥有实例变量和构造函数。<strong>抽象类</strong>也可以拥有非抽象方法。</p>
+<p>构造抽象类的实例是不可能的。</p>
+<blockquote>
+<p>Person p = new Person(“LIKAKI”); //错误</p>
+</blockquote>
+<p>但是你可以用一个具体子类的对象去赋值.</p>
+<blockquote>
+<p>//假设定义了一个Programmer类继承并实现了Person类的抽象方法<br>Person p = new Programmer(“LIKAKI”, 1234); </p>
+</blockquote>
+<h2 id="受保护访问"><a href="#受保护访问" class="headerlink" title="受保护访问"></a>受保护访问</h2><p>如果你想要限制方法只能被<strong>子类</strong>访问，或者想要子类可以访问<strong>父类</strong>的实例变量，你可以将父类方法或变量声明为 <code>protected</code>。在Java中，<code>protected</code> 赋予了包级别访问。</p>
+<h2 id="匿名子类"><a href="#匿名子类" class="headerlink" title="匿名子类"></a>匿名子类</h2><h2 id="继承和默认方法"><a href="#继承和默认方法" class="headerlink" title="继承和默认方法"></a>继承和默认方法</h2><p><strong>类比接口优先。</strong></p>
+<h1 id="Object-终极父类"><a href="#Object-终极父类" class="headerlink" title="Object: 终极父类"></a>Object: 终极父类</h1><h2 id="toString方法"><a href="#toString方法" class="headerlink" title="toString方法"></a>toString方法</h2><p>Mehtod: <code>String</code> <code>toString()</code></p>
+<h2 id="equals方法"><a href="#equals方法" class="headerlink" title="equals方法"></a>equals方法</h2><p>Mehtod: <code>boolean</code> <code>equals(Object other)</code><br><code>Object</code> 类 的 <code>equals()</code> 方法用来测试一个对象是否被认为与另一个对象相等，方法所强调的是对象的引用，而非内容。</p>
+<p>对于一些 <strong>基于状态的相等性测试</strong> 中，才有必要 <strong>覆盖</strong> <code>equals()</code> 方法。<br>在定义 <code>equals()</code> 方法 时，有一些需要注意的常规步骤（以 <code>Item</code> 类为例，有 <code>description</code> 和 <code>price</code> 两个属性）：</p>
+<ol>
+<li><p>检查两者的对象引用是否完全相同，这个检测耗费很小</p>
+<blockquote>
+<p>if (this == otherObject) return true; </p>
+</blockquote>
+</li>
+<li><p>与 <code>null</code> 做比较时，所有的 equals()方法 都要返回 <code>false</code> </p>
+<blockquote>
+<p>if (otherObject == null) return false; </p>
+</blockquote>
+</li>
+<li><p>由于 <strong>覆盖</strong> 了 <code>Object</code> 类 的 <code>equals()</code> 方法，需要把比较对象转换成实际的类型。在转换类型之前，需要使用 <code>getClass()</code> 方法 </p>
+<blockquote>
+<p>if (getClass() != otherObject.getClass()) return false; </p>
+</blockquote>
+</li>
+<li><p>最后比较实例变量。对于基本类型，使用 <code>==</code> 操作符。但是对于 <code>double类型</code>，或者担心 <code>NaN</code> 或者无穷值，那么使用 <code>Double.equals()</code> 方法。对于对象，使用 <code>Objects.equals()</code>，一个 <code>null</code> 安全的 <code>equals()</code> 方法。</p>
+<blockquote>
+<p>Item other == (Item) otherObject;<br>return Objects.equals(description, other.description)<br>  &amp;&amp; price == other.price;</p>
+</blockquote>
+</li>
+</ol>
+<p>在子类中定义 <code>equals()</code> 方法时，先要调用父类的 <code>equals()</code> 方法。如果父类的检查没用通过，那么对象一定不相等。</p>
+<h2 id="hasCode方法"><a href="#hasCode方法" class="headerlink" title="hasCode方法"></a>hasCode方法</h2><p>Mehtod: <code>int</code> <code>hashCode()</code><br>如果你重新;定义了 <code>equals()</code> 方法，那么最好也重新定义 <code>hashCode()</code> 方法 以兼容 <code>equals()</code> 方法，不然当用户将你的类插入哈希集合或者HashMap时，它们可能会丢失.<br><code>Object.hash()</code> 方法 是 <strong>空指针安全</strong> 的。</p>
+<h2 id="clone方法"><a href="#clone方法" class="headerlink" title="clone方法"></a>clone方法</h2><p>Mehtod: <code>protected</code> <code>Object</code> <code>clone()</code><br><code>clone()</code> 方法 很复杂，也很少需要。除非你有一个很好的理由，不然不需要去 <strong>覆盖</strong> 这个方法。<br><code>clone()</code> 方法 是用来创建一个”克隆”的对象，而不是复制对象的引用。即 <strong>拥有与原对象相同的状态的不同对象</strong>。<br><code>Object.clone()</code> 方法 做了一个 <strong>浅拷贝</strong>。它简单的从原对象中拷贝所有的实例变量到被拷贝的对象中，当拷贝的实例变量都是基础变量或者不会改变，那没有问题。但如果不是，那么原对象和克隆对象将 <strong>共享可变的状态</strong>，这个时候就需要 <strong>覆盖</strong>  <code>clone()</code> 方法。<br><del>没写完</del></p>
+<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><p>一个典型例子，去定义一个有四个实例的枚举类型。</p>
+<blockquote>
+<p>public enum Size { SMALL, MEDIUM, LARGE, EXTRA_LARGE };</p>
+</blockquote>
+<h2 id="枚举方法"><a href="#枚举方法" class="headerlink" title="枚举方法"></a>枚举方法</h2><p>由于每一个枚举类型都有固定的实例集，因此可以直接用 <code>==</code> 来比较它们，也可以用 <code>equals()</code> 方法 来比较他们.<br>同样的，也不需要提供 <code>toString()</code> 方法，它会自动产生枚举对象的名称。就像上文例子中的 <code>SAMLL</code> <code>MEDIUM</code> 等。<br>与 <code>toString()</code> 方法 相反的操作是静态方法 <code>valueOf()</code>，它针对枚举类型而合成。</p>
+<blockquote>
+<p>Size otherSize = Size.valueOf(“SMALL”); </p>
+</blockquote>
+<p>你大概也可以直接使用</p>
+<blockquote>
+<p>Size otherSize = Size.SMALL; </p>
+</blockquote>
+<p>要获取一个包含所有该枚举类型实例的数组，可以使用 <code>values()</code> 方法.</p>
+<blockquote>
+<p>Size[] allValues = Size.values();</p>
+</blockquote>
+<p>所以，你可以在增强的for循环中使用这种方法来遍历一个枚举类型的所有实例: </p>
+<blockquote>
+<p>for (Size s : Size.values()) { System.out.println(s); }</p>
+</blockquote>
+<p><code>ordianl()</code> 方法 返回实例在枚举声明中的位置，位置从0开始。</p>
+<p><code>java.lang.Enum&lt;E&gt;</code> 类的方法</p>
+<ul>
+<li><code>String</code> <code>toString()</code> 或者 <code>String</code> <code>name()</code> </li>
+<li><code>int</code> <code>ordinal()</code></li>
+<li><code>int</code> <code>compareTo(Enum&lt;E&gt; other)</code></li>
+<li><code>Class&lt;E&gt;</code> <code>getDeclaringClass()</code> 或者 <code>Class&lt;E&gt;</code> <code>getClass()</code> </li>
+<li>…</li>
+</ul>
+<h2 id="构造函数、方法和域"><a href="#构造函数、方法和域" class="headerlink" title="构造函数、方法和域"></a>构造函数、方法和域</h2><p><strong>枚举类型的构造函数总是私有的.</strong> 你甚至可以省略 <code>private</code> 修饰符。下面是一个例子: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Size&#123;</span><br><span class="line">    SAMLL(<span class="string">"S"</span>), MEDIUM(<span class="string">"M"</span>), LARGE(<span class="string">"L"</span>), EXTRA_LARGE(<span class="string">"XL"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String abbreviation;</span><br><span class="line"></span><br><span class="line">    Size(String abbreviation) &#123;</span><br><span class="line">        <span class="keyword">this</span>.abbreviation = abbreviation; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAbbreviation</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> abbreviation; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每一个枚举类型实例保证只被构造一次。</p>
+<h2 id="实例的实现体"><a href="#实例的实现体" class="headerlink" title="实例的实现体"></a>实例的实现体</h2><p>你可以给单个的enum实例添加方法，但是只能<strong>覆盖</strong>枚举类中定义的方法。例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设需要实现一个计算器</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Operation&#123;</span><br><span class="line">    ADD&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">eval</span><span class="params">(<span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2)</span> </span>&#123; <span class="keyword">return</span> arg1 + arg2; &#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    SUBTRACT&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">eval</span><span class="params">(<span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2)</span> </span>&#123; <span class="keyword">return</span> arg1 - arg2; &#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    MULTIPLY&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">eval</span><span class="params">(<span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2)</span> </span>&#123; <span class="keyword">return</span> arg1 * arg2; &#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    DIVIDE&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">eval</span><span class="params">(<span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2)</span> </span>&#123; <span class="keyword">return</span> arg1 / arg2; &#125;</span><br><span class="line">    &#125;; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">eval</span><span class="params">(<span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你需要调用加法，你可以这么写:</p>
+<blockquote>
+<p>Operation op = Operation ADD;<br>int result = op.eval(first, second);</p>
+</blockquote>
+<p>大概，你也可以这样使用: </p>
+<blockquote>
+<p>int result = Operation.ADD.eval(first, second); </p>
+</blockquote>
+<h2 id="静态成员"><a href="#静态成员" class="headerlink" title="静态成员"></a>静态成员</h2><p>枚举类可以拥有静态成员，这是合法的。但由于 <strong>枚举常量在静态成员之前构建</strong>，所以你不能再构造函数里引用任何静态成员。<br>解决办法是在一个静态初始化块中进行初始化工作:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Modifier &#123;</span><br><span class="line">    PUBLIC, PRIVATE, PROTECTED, STATIC, FINAL, ABSTRACT;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mask;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> maskBit = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (Modifier m : Modifier.values()) &#123;</span><br><span class="line">            m.mask = maskBit;</span><br><span class="line">            maskBit *= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外，枚举类型可以嵌套在一个类中。这样嵌套的枚举类属于<strong>隐式的静态嵌套类</strong>，也就是说它们的方法不能引用外部类的实例变量。</p>
+<h2 id="switch枚举对象"><a href="#switch枚举对象" class="headerlink" title="switch枚举对象"></a>switch枚举对象</h2><p>在 <code>switch</code> 语句中，你也可以使用<strong>枚举常量</strong>。下面的例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Operation &#123;</span><br><span class="line">    ADD, SUBTRACT, MULTIPLY, DIVIDE</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">eval</span><span class="params">(Operation op, <span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">switch</span>(op) &#123;</span><br><span class="line">        <span class="keyword">case</span> ADD: result = arg1 + arg2; <span class="keyword">break</span>;  <span class="comment">//这里使用的是ADD, 而不是Operation.ADD</span></span><br><span class="line">        <span class="keyword">case</span> SUBTRACT: result = arg1 - arg2; <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MULTIPLY: result = arg1 * arg2; <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> DIVIDE: result = arg1 / arg2; <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，你使用的是 <code>ADD</code>，而不是 <code>Operation.ADD</code>。操作类型是根据<strong>switch计算的表达式类型</strong>推断出来的。<br>根据 <strong>Java语言规范</strong>，如果针对枚举类型的 <code>switch语句</code> 处理的不彻底，即没有针对所有枚举常量的 <code>case判断</code> 并且没有 <code>default字句</code>，则可能会产生警告。</p>
+<h1 id="运行时类型信息和资源"><a href="#运行时类型信息和资源" class="headerlink" title="运行时类型信息和资源"></a>运行时类型信息和资源</h1><p>在Java中，你可以在程序运行时查询一个对象属于那个类。此外，还可以查出类是如何加载的，并加载被称为 <strong>资源</strong> 的相关数据。</p>
+<h2 id="Class类"><a href="#Class类" class="headerlink" title="Class类"></a>Class类</h2><p><code>getClass()</code> 方法返回一个被称为 <code>Class</code> 类 的对象。</p>
+<blockquote>
+<p>Object obj = …;<br>Class<?> c1 = obj.getClass();  //<?> 这样的前缀不能省略</p>
+</blockquote>
+<p>你可以通过静态方法 <code>Class.forName()</code> 来获取一个 <code>Class对象</code>.:</p>
+<blockquote>
+<p>String className = “java.util.Scanner”;<br>Class&lt;?&gt; c1 = Class.forName(className);   //一个描述java.util.Scanner类的对象</p>
+</blockquote>
+<p><code>Class.forName()</code> 主要用与构造那些可能在编译时还不被知晓的类的 <code>Class对象</code>。如果你已经提前知道需要哪一个类，就使用该类的名称:</p>
+<blockquote>
+<p>Class&lt;?&gt; c1 = java.util.Scanner.class; </p>
+</blockquote>
+<p>后缀 <code>.class</code> 也可以用来获取其他类型的信息:</p>
+<blockquote>
+<p>Class<?> c2 = String[].class; //描述数组类型String[]
+Class<?> c3 = Runnable.class; //描述Runnable接口<br>Class<?> c4 = int.class; //描述int类型
+Class<?> c5 = void.class; //描述void类型</p>
+</blockquote>
+<p><code>Array</code> 在Java中属于类，但是 <code>接口</code>、<code>基本类型</code> 和 <code>void</code> 都不是类。<code>Class</code> 这个名称有一些不太合适。</p>
+<p>虚拟机为每种类型管理了一个唯一的 <code>Class对象</code>，因此你可以用 <code>==</code> 操作符来比较类对象。例如”</p>
+<blockquote>
+<p>if (other.getClass() == Employee.class) …</p>
+</blockquote>
+<h2 id="资源加载"><a href="#资源加载" class="headerlink" title="资源加载"></a>资源加载</h2><p><code>Class</code> 类 可以定位应用程序可能需要的资源，比如配置文件或者图片。<br>你既可以使用相对路径</p>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p>虚拟机指令存储在类文件。每个类文件都包含单个类或接口的指令。一个类文件可以存放在文件系统里，JAR文件里，远程某个位置或者甚至在内存中动态构建。一个<strong>类加载器</strong>负责加载字节流，并且在虚拟机中将他们转化成一个类或者接口。</p>
+<p><strong>bootstrap类加载器</strong>会加载Java类库(一般来自 <code>/jre/lib/rt.jar</code>文件)，它是虚拟机的一部分。<br><strong>扩展类加载器</strong> 从 <code>/jre/lib/ext</code> 目录中加载”标准库扩展”部分。<br><strong>系统类加载器</strong>加载应用程序类。它定位 <code>classpath</code> 中目录和JAR文件的类。</p>
+<h2 id="上下文类加载器"><a href="#上下文类加载器" class="headerlink" title="上下文类加载器"></a>上下文类加载器</h2><h2 id="服务加载器"><a href="#服务加载器" class="headerlink" title="服务加载器"></a>服务加载器</h2><h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><h2 id="枚举类成员"><a href="#枚举类成员" class="headerlink" title="枚举类成员"></a>枚举类成员</h2><h2 id="对象检查"><a href="#对象检查" class="headerlink" title="对象检查"></a>对象检查</h2><h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><h2 id="对象构造"><a href="#对象构造" class="headerlink" title="对象构造"></a>对象构造</h2><h2 id="JavaBeans"><a href="#JavaBeans" class="headerlink" title="JavaBeans"></a>JavaBeans</h2><h2 id="使用数组"><a href="#使用数组" class="headerlink" title="使用数组"></a>使用数组</h2><h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/15/Java-CH5/" rel="next" title="Java 异常 断言和日志处理">
+      Java 异常 断言和日志处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Extend-继承"><span class="nav-number">1.</span> <span class="nav-text">Extend 继承</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#父类与子类"><span class="nav-number">1.1.</span> <span class="nav-text">父类与子类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义和继承子类方法"><span class="nav-number">1.2.</span> <span class="nav-text">定义和继承子类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法覆盖"><span class="nav-number">1.3.</span> <span class="nav-text">方法覆盖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子类的构造"><span class="nav-number">1.4.</span> <span class="nav-text">子类的构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#父类赋值"><span class="nav-number">1.5.</span> <span class="nav-text">父类赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转换"><span class="nav-number">1.6.</span> <span class="nav-text">转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#final方法和类"><span class="nav-number">1.7.</span> <span class="nav-text">final方法和类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象方法和类"><span class="nav-number">1.8.</span> <span class="nav-text">抽象方法和类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#受保护访问"><span class="nav-number">1.9.</span> <span class="nav-text">受保护访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匿名子类"><span class="nav-number">1.10.</span> <span class="nav-text">匿名子类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承和默认方法"><span class="nav-number">1.11.</span> <span class="nav-text">继承和默认方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-终极父类"><span class="nav-number">2.</span> <span class="nav-text">Object: 终极父类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#toString方法"><span class="nav-number">2.1.</span> <span class="nav-text">toString方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#equals方法"><span class="nav-number">2.2.</span> <span class="nav-text">equals方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hasCode方法"><span class="nav-number">2.3.</span> <span class="nav-text">hasCode方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clone方法"><span class="nav-number">2.4.</span> <span class="nav-text">clone方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#枚举"><span class="nav-number">3.</span> <span class="nav-text">枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举方法"><span class="nav-number">3.1.</span> <span class="nav-text">枚举方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数、方法和域"><span class="nav-number">3.2.</span> <span class="nav-text">构造函数、方法和域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例的实现体"><span class="nav-number">3.3.</span> <span class="nav-text">实例的实现体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态成员"><span class="nav-number">3.4.</span> <span class="nav-text">静态成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#switch枚举对象"><span class="nav-number">3.5.</span> <span class="nav-text">switch枚举对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行时类型信息和资源"><span class="nav-number">4.</span> <span class="nav-text">运行时类型信息和资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class类"><span class="nav-number">4.1.</span> <span class="nav-text">Class类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源加载"><span class="nav-number">4.2.</span> <span class="nav-text">资源加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载器"><span class="nav-number">4.3.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上下文类加载器"><span class="nav-number">4.4.</span> <span class="nav-text">上下文类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务加载器"><span class="nav-number">4.5.</span> <span class="nav-text">服务加载器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射"><span class="nav-number">5.</span> <span class="nav-text">反射</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类成员"><span class="nav-number">5.1.</span> <span class="nav-text">枚举类成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象检查"><span class="nav-number">5.2.</span> <span class="nav-text">对象检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用"><span class="nav-number">5.3.</span> <span class="nav-text">方法调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象构造"><span class="nav-number">5.4.</span> <span class="nav-text">对象构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaBeans"><span class="nav-number">5.5.</span> <span class="nav-text">JavaBeans</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用数组"><span class="nav-number">5.6.</span> <span class="nav-text">使用数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理"><span class="nav-number">5.7.</span> <span class="nav-text">代理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LI JIAQI</p>
+  <div class="site-description" itemprop="description">No one knows the site</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LI JIAQI</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wwww.lijiaqi.world","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本章要点：  当你抛出了一个异常时，控制权转移到最近的异常处理器 在Java中，由编译器跟踪已检查异常 checked exception。 使用 try&#x2F;catch 结构处理异常。 在正常执行完之后或者当发生异常时，try-with-resources 语句会自动关闭资源。 使用 try&#x2F;finally 结构处理那些不论执行是否正常地进行都要发生的行为。 你可以捕获和重新抛出一个异常，或者将它与">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 异常 断言和日志处理">
+<meta property="og:url" content="http://wwww.lijiaqi.world/2018/10/15/Java-CH5/index.html">
+<meta property="og:site_name" content="ljqqqq">
+<meta property="og:description" content="本章要点：  当你抛出了一个异常时，控制权转移到最近的异常处理器 在Java中，由编译器跟踪已检查异常 checked exception。 使用 try&#x2F;catch 结构处理异常。 在正常执行完之后或者当发生异常时，try-with-resources 语句会自动关闭资源。 使用 try&#x2F;finally 结构处理那些不论执行是否正常地进行都要发生的行为。 你可以捕获和重新抛出一个异常，或者将它与">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-15T00:13:21.000Z">
+<meta property="article:modified_time" content="2020-02-02T13:38:18.741Z">
+<meta property="article:author" content="LI JIAQI">
+<meta property="article:tag" content="Error">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wwww.lijiaqi.world/2018/10/15/Java-CH5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Java 异常 断言和日志处理 | ljqqqq</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ljqqqq</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wwww.lijiaqi.world/2018/10/15/Java-CH5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LI JIAQI">
+      <meta itemprop="description" content="No one knows the site">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljqqqq">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 异常 断言和日志处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-15 09:13:21" itemprop="dateCreated datePublished" datetime="2018-10-15T09:13:21+09:00">2018-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-02 22:38:18" itemprop="dateModified" datetime="2020-02-02T22:38:18+09:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本章要点：</p>
+<ul>
+<li>当你抛出了一个<strong>异常</strong>时，控制权转移到最近的<strong>异常处理器</strong></li>
+<li>在Java中，由<strong>编译器</strong>跟踪<strong>已检查异常</strong> <code>checked exception</code>。</li>
+<li>使用 <code>try/catch</code> 结构处理异常。</li>
+<li>在正常执行完之后或者当发生异常时，<code>try-with-resources</code> 语句会自动关闭资源。</li>
+<li>使用 <code>try/finally</code> 结构处理那些不论执行是否正常地进行都要发生的行为。</li>
+<li>你可以<strong>捕获</strong>和重新<strong>抛出</strong>一个异常，或者将它与另外一个异常链起来。</li>
+<li><strong>堆栈踪迹</strong><code>step trace</code>信息描述了一个程序执行中挂起时所有方法的调用情况。</li>
+<li>一个<strong>断言</strong>检查一个条件，如果启用了<strong>断言检查</strong>，当条件不满足时，会抛出一个<strong>错误</strong>。</li>
+<li><strong>日志处理器</strong>按照层次来分类，他们可以接收从 <code>SERVER 到</code>FINEST` 级别范围的日志信息。</li>
+<li><strong>日志处理器</strong>可以将日志信息发送给代替目的地，<strong>格式化器</strong> <code>formatter</code> 控制信息格式。</li>
+<li>你可以通过日志配置文件控制日志属性。</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p><code>Java</code> 支持异常处理。在异常处理中，一个方法可以通过<strong>抛出</strong>异常来发出一个严重问题的信号；调用链中的某个方法，不一定是直接调用者，负责<strong>捕获</strong>并处理异常。异常处理最根本的优点是，它将错误检查和错误处理过程<strong>解耦</strong>了。</p>
+<h2 id="异常抛出"><a href="#异常抛出" class="headerlink" title="异常抛出"></a>异常抛出</h2><p>当执行一条 <code>throw</code> 语句时，正常的执行流程被立刻中断。方法轻质执行，并不会给它的调用者返回一个值，而是把<strong>控制权</strong>转移给<strong>异常处理器</strong>。具体参考5.1.4<strong>异常捕获</strong>。</p>
+<h2 id="异常继承层次"><a href="#异常继承层次" class="headerlink" title="异常继承层次"></a>异常继承层次</h2><p>所有的异常类都派生自 <code>Throwable</code> 类。<br>当发生了某种异常，而这种异常不是期望应用程序处理的，比如说内存耗尽，则会抛出一个 <code>Error</code> 子类的异常。除了提示用户，情况变得很严重，你能做的事情并不多。<br>程序员报告的异常属于 <code>Exception</code> 类的子类。它们分为两种：</p>
+<ul>
+<li><strong>未检查异常</strong> <code>unchecked exception</code> 属于 <code>RuntimeExcepion</code> 的子类。</li>
+<li>所有其他异常都是<strong>已检查异常</strong> <code>checked exception</code>。</li>
+</ul>
+<p><strong>已检查异常</strong>用于错误可被提前预知的情况。<br><strong>未检查异常</strong>表明程序员造成的逻辑错误，不是不可避免的外部风险导致的。</p>
+<h2 id="已检查异常的申明"><a href="#已检查异常的申明" class="headerlink" title="已检查异常的申明"></a>已检查异常的申明</h2><p>可能会抛出<strong>已检查异常</strong>的任何方法都必须在方法头上声明一个 <code>throws</code> 语句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(Object obj, String fileName)</span> <span class="keyword">throws</span> IOException, ReflectiveOperationException</span></span><br></pre></td></tr></table></figure>
+<p>或者可以在代码逻辑中添加 <code>throw</code> 语句来抛出异常。</p>
+<p>在 <code>throws</code> 语句中，你可以将异常合并到一个共同的父类。这样做好不好，取决于异常自身。如果异常之间没变任何联系，则不要将它们合并到一个异常中抛出————那样违背了异常检查的目的。<br>异常处理的黄金法则：<strong>早抛出，后捕获</strong>。<br>当你覆盖一个方法的时候，它不能抛出比父类方法中还要多的<strong>已检查异常</strong>。如果方法试图抛出一个无关的<strong>已检查异常</strong>，编译会报错。（如果父类方法没有<code>throws</code> 语句，则覆盖后的方法不能抛出<strong>已检查异常</strong>）<br>当一个方法抛出（已检查的或者未检查的）异常时，你可以用Javadoc的 <code>@throws</code> 标签来文档化。</p>
+<h2 id="异常捕获"><a href="#异常捕获" class="headerlink" title="异常捕获"></a>异常捕获</h2><p>为了捕获异常，需要准备一个<code>try</code>代码块。最简单的形式如下，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (ExceptionClass e)&#123;    <span class="comment">//can be other kind of Exception</span></span><br><span class="line">    <span class="keyword">throw</span> e;    <span class="comment">//can be other handler or method</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于这个基本结构，你可以做两种修改。对于不用的异常类， 你可以有多个异常处理器，（<code>catch</code> 语句按照从上到下匹配，所以最具体的异常类型必须放在前面）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (ExceptionClass1 e)&#123;</span><br><span class="line">    <span class="comment">//handler1</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (ExceptionClass2 e)&#123;</span><br><span class="line">    <span class="comment">//handler2</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (ExceptionClass3 e)&#123;</span><br><span class="line">    <span class="comment">//handler3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一种方法，你可以让多种异常共享一个处理器，（这种情况下，处理器中能在异常变量上调用所有异常类共有的方法）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (ExceptionClass1 | ExceptionClass2 | ExceptionClas3 e) s&#123;</span><br><span class="line">    <span class="keyword">throw</span> e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="try-with-resources-语句"><a href="#try-with-resources-语句" class="headerlink" title="try-with-resources 语句"></a>try-with-resources 语句</h2><p>资源管理是异常处理中需要关注的问题之一。在资源的 <code>close</code> 方法之前抛出了一个异常，就会导致该方法不会执行，资源内容可能会丢失；如果异常被触发了多次，系统可能会耗尽<strong>文件句柄</strong>。<br><code>try</code> 语句的一种特定形式可以解决这个问题。你可以在 <code>try</code> 语句的头部指定任意数目的资源，（每个资源必须属于一个实现了 <code>AutoCloseable</code> 接口的类）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (ResourceTpye1 res1 = init1; ResourceTpye2 res2 = init2) &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>try</code> 语句块退出时，所有资源对象的 <code>close</code> 方法会被触发，资源按照初始化的相反顺序关闭。</p>
+<h2 id="finally-子句"><a href="#finally-子句" class="headerlink" title="finally 子句"></a>finally 子句</h2><p>不管异常是否发生，<code>try-with-resources</code> 语句都能自动关闭资源。有时，你需要清除一些没有实现 <code>AutoCloseable</code> 接口的资源。那样的话，使用<code>finally</code>字句，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//clean up</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>try</code> 语句不管正常完成还是发生异常，都会执行 <code>finally</code> 字句。<br>你应该避免在 <code>finally</code> 字句中抛出异常，如果 <code>try</code> 块因为一个异常而中断，该异常会被 <code>finally</code> 中的异常覆盖，而不是一起抛出。类似地，<code>finally</code> 字句中不应该包含 <code>return</code> 语句。如果 <code>try</code> 块中也有一个 <code>return</code> 语句，那么它会被 <code>finally</code> 字句中的返回值替代。</p>
+<h2 id="异常的重抛和链接"><a href="#异常的重抛和链接" class="headerlink" title="异常的重抛和链接"></a>异常的重抛和链接</h2><h2 id="堆栈踪迹"><a href="#堆栈踪迹" class="headerlink" title="堆栈踪迹"></a>堆栈踪迹</h2><h2 id="Objects-requireNonNull-方法"><a href="#Objects-requireNonNull-方法" class="headerlink" title="Objects.requireNonNull 方法"></a>Objects.requireNonNull 方法</h2><h1 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h1><h2 id="使用断言"><a href="#使用断言" class="headerlink" title="使用断言"></a>使用断言</h2><h2 id="启用和禁用断言"><a href="#启用和禁用断言" class="headerlink" title="启用和禁用断言"></a>启用和禁用断言</h2><h1 id="记录日志"><a href="#记录日志" class="headerlink" title="记录日志"></a>记录日志</h1><h2 id="采用logger"><a href="#采用logger" class="headerlink" title="采用logger"></a>采用logger</h2><h2 id="日志记录器"><a href="#日志记录器" class="headerlink" title="日志记录器"></a>日志记录器</h2><h2 id="日志级别"><a href="#日志级别" class="headerlink" title="日志级别"></a>日志级别</h2><h2 id="其他日志记录方法"><a href="#其他日志记录方法" class="headerlink" title="其他日志记录方法"></a>其他日志记录方法</h2><h2 id="日志记录的配置项"><a href="#日志记录的配置项" class="headerlink" title="日志记录的配置项"></a>日志记录的配置项</h2><h2 id="日志处理器"><a href="#日志处理器" class="headerlink" title="日志处理器"></a>日志处理器</h2><h2 id="过滤器和格式化器"><a href="#过滤器和格式化器" class="headerlink" title="过滤器和格式化器"></a>过滤器和格式化器</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/15/Java-CH4/" rel="prev" title="Java 继承与反射">
+      <i class="fa fa-chevron-left"></i> Java 继承与反射
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/15/Java-CH1/" rel="next" title="Java 基本的编程结构">
+      Java 基本的编程结构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#异常处理"><span class="nav-number">1.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#异常抛出"><span class="nav-number">1.1.</span> <span class="nav-text">异常抛出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常继承层次"><span class="nav-number">1.2.</span> <span class="nav-text">异常继承层次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#已检查异常的申明"><span class="nav-number">1.3.</span> <span class="nav-text">已检查异常的申明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常捕获"><span class="nav-number">1.4.</span> <span class="nav-text">异常捕获</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try-with-resources-语句"><span class="nav-number">1.5.</span> <span class="nav-text">try-with-resources 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finally-子句"><span class="nav-number">1.6.</span> <span class="nav-text">finally 子句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常的重抛和链接"><span class="nav-number">1.7.</span> <span class="nav-text">异常的重抛和链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆栈踪迹"><span class="nav-number">1.8.</span> <span class="nav-text">堆栈踪迹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Objects-requireNonNull-方法"><span class="nav-number">1.9.</span> <span class="nav-text">Objects.requireNonNull 方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#断言"><span class="nav-number">2.</span> <span class="nav-text">断言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用断言"><span class="nav-number">2.1.</span> <span class="nav-text">使用断言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启用和禁用断言"><span class="nav-number">2.2.</span> <span class="nav-text">启用和禁用断言</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#记录日志"><span class="nav-number">3.</span> <span class="nav-text">记录日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#采用logger"><span class="nav-number">3.1.</span> <span class="nav-text">采用logger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志记录器"><span class="nav-number">3.2.</span> <span class="nav-text">日志记录器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志级别"><span class="nav-number">3.3.</span> <span class="nav-text">日志级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他日志记录方法"><span class="nav-number">3.4.</span> <span class="nav-text">其他日志记录方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志记录的配置项"><span class="nav-number">3.5.</span> <span class="nav-text">日志记录的配置项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志处理器"><span class="nav-number">3.6.</span> <span class="nav-text">日志处理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤器和格式化器"><span class="nav-number">3.7.</span> <span class="nav-text">过滤器和格式化器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LI JIAQI</p>
+  <div class="site-description" itemprop="description">No one knows the site</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LI JIAQI</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

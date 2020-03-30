@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wwww.lijiaqi.world","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="编程中常常需要实现一些适用于多种类型的类和方法。基本思想非常简单且毫无疑问非常有用。 本章要点:   泛型类是带有一个或多个类型参数的类。 泛型方法是带有类型参数的方法。 你可以要求类型参数必须是一个或者多个类型的子类型。 泛型类型是不变的。当S是T的子类型时，G&lt;S&gt; 和 G&lt;T&gt; 没有关系。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 泛型编程">
+<meta property="og:url" content="http://wwww.lijiaqi.world/2018/10/18/Java-CH6/index.html">
+<meta property="og:site_name" content="ljqqqq">
+<meta property="og:description" content="编程中常常需要实现一些适用于多种类型的类和方法。基本思想非常简单且毫无疑问非常有用。 本章要点:   泛型类是带有一个或多个类型参数的类。 泛型方法是带有类型参数的方法。 你可以要求类型参数必须是一个或者多个类型的子类型。 泛型类型是不变的。当S是T的子类型时，G&lt;S&gt; 和 G&lt;T&gt; 没有关系。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-18T04:45:09.000Z">
+<meta property="article:modified_time" content="2020-02-02T13:38:18.741Z">
+<meta property="article:author" content="LI JIAQI">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wwww.lijiaqi.world/2018/10/18/Java-CH6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Java 泛型编程 | ljqqqq</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ljqqqq</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wwww.lijiaqi.world/2018/10/18/Java-CH6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LI JIAQI">
+      <meta itemprop="description" content="No one knows the site">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljqqqq">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 泛型编程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-18 13:45:09" itemprop="dateCreated datePublished" datetime="2018-10-18T13:45:09+09:00">2018-10-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-02 22:38:18" itemprop="dateModified" datetime="2020-02-02T22:38:18+09:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>编程中常常需要实现一些适用于多种类型的类和方法。</strong>基本思想非常简单且毫无疑问非常有用。</p>
+<p>本章要点: </p>
+<ul>
+<li><strong>泛型类</strong>是带有一个或多个类型参数的类。</li>
+<li><strong>泛型方法</strong>是带有类型参数的方法。</li>
+<li>你可以要求类型参数必须是一个或者多个类型的<strong>子类型</strong>。</li>
+<li>泛型类型是<strong>不变的</strong>。当S是T的子类型时，<code>G&lt;S&gt;</code> 和 <code>G&lt;T&gt;</code> 没有关系。</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h1><p><strong>泛型类</strong>是带有一个或多个类型参数的类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>，<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> K key; </span><br><span class="line">    <span class="keyword">private</span> V value;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Entry</span><span class="params">(K key，V value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key; </span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> K <span class="title">getKey</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> key; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> V <span class="title">getValue</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> value; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>类型参数不能用基本类型实例化。</strong> 例如 <code>Entry&lt;String，int&gt;</code> 在Java中是无效的。<br>当你构造一个泛型类对象时，可以在构造函数中省略类型参数。例如:</p>
+<blockquote>
+<p>Entry&lt;String，Integer&gt; entry = new Entry&lt;&gt;(“LIKAKI”，42)<br>//你仍然需要在参数前面添加<code>&lt;&gt;</code>，这被称为<strong>钻石语法</strong>。</p>
+</blockquote>
+<h1 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h1><p><strong>泛型方法</strong>是带有类型参数的方法。泛型方法可以是普通类或者泛型类的方法。<br>想象一个对换数组中元素的方法: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Arrays</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(T[] array, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        T temp = array[i]; </span><br><span class="line">        array[i] = array[j];</span><br><span class="line">        array[j] = temp; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当你声明一个<strong>泛型方法</strong>时，<strong>类型参数</strong>要放在<strong>修饰符</strong>之后，<strong>返回类型</strong>之前。</p>
+<blockquote>
+<p>public static <T> void swap(T[] array, int i, int j) {…}</p>
+</blockquote>
+<p>当你调用<strong>泛型方法</strong>时，不需要指定类型参数。它可以从方法的参数和返回类型中推断出来。</p>
+<blockquote>
+<p>String[] friends = …;<br>Array.swap(friends, 0, 1); </p>
+</blockquote>
+<p>你也可以在调用时，在方法名称之前显式地提供类型（以便你获得更好的错误信息），例如：</p>
+<blockquote>
+<p>Array.<String>swap(friends, 0, 1); </p>
+</blockquote>
+<h1 id="类型限定"><a href="#类型限定" class="headerlink" title="类型限定"></a>类型限定</h1><p>有时，泛型类或方法的<strong>类型参数</strong>需要满足某些要求。你可以对类型做出限定，要求该类型继承某些类或者实现某种接口。<br>例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends AutoCloseable&gt; <span class="function"><span class="keyword">void</span> <span class="title">closeAll</span><span class="params">(ArrayList&lt;T&gt; elems)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (T elem : elems) elem.close(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>类型参数</strong>可以有多个限定，但最多只能有一个是<strong>类</strong>，并且你必须将其放在限定列表的第一位。例如:</p>
+<blockquote>
+<p>T extends Runnable &amp; AutoCloseable</p>
+</blockquote>
+<h1 id="类型变异和通配符"><a href="#类型变异和通配符" class="headerlink" title="类型变异和通配符"></a>类型变异和通配符</h1><h1 id="Java虚拟机中的泛型"><a href="#Java虚拟机中的泛型" class="headerlink" title="Java虚拟机中的泛型"></a>Java虚拟机中的泛型</h1><h1 id="泛型约束"><a href="#泛型约束" class="headerlink" title="泛型约束"></a>泛型约束</h1><h1 id="反射与泛型"><a href="#反射与泛型" class="headerlink" title="反射与泛型"></a>反射与泛型</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/15/Java-CH1/" rel="prev" title="Java 基本的编程结构">
+      <i class="fa fa-chevron-left"></i> Java 基本的编程结构
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/19/Java-CH9/" rel="next" title="Java 正则表达式的应用">
+      Java 正则表达式的应用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型类"><span class="nav-number">1.</span> <span class="nav-text">泛型类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型方法"><span class="nav-number">2.</span> <span class="nav-text">泛型方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类型限定"><span class="nav-number">3.</span> <span class="nav-text">类型限定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类型变异和通配符"><span class="nav-number">4.</span> <span class="nav-text">类型变异和通配符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机中的泛型"><span class="nav-number">5.</span> <span class="nav-text">Java虚拟机中的泛型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型约束"><span class="nav-number">6.</span> <span class="nav-text">泛型约束</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射与泛型"><span class="nav-number">7.</span> <span class="nav-text">反射与泛型</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LI JIAQI</p>
+  <div class="site-description" itemprop="description">No one knows the site</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LI JIAQI</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wwww.lijiaqi.world","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这可能是见过最不像算法题的数学题目了...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="玻璃球问题">
+<meta property="og:url" content="http://wwww.lijiaqi.world/2018/10/31/temp/glass-ball/index.html">
+<meta property="og:site_name" content="ljqqqq">
+<meta property="og:description" content="这可能是见过最不像算法题的数学题目了...">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-31T04:50:40.000Z">
+<meta property="article:modified_time" content="2020-02-02T13:38:18.741Z">
+<meta property="article:author" content="LI JIAQI">
+<meta property="article:tag" content="Code">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://wwww.lijiaqi.world/2018/10/31/temp/glass-ball/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>玻璃球问题 | ljqqqq</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ljqqqq</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wwww.lijiaqi.world/2018/10/31/temp/glass-ball/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LI JIAQI">
+      <meta itemprop="description" content="No one knows the site">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljqqqq">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          玻璃球问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-31 13:50:40" itemprop="dateCreated datePublished" datetime="2018-10-31T13:50:40+09:00">2018-10-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-02 22:38:18" itemprop="dateModified" datetime="2020-02-02T22:38:18+09:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Code/" itemprop="url" rel="index"><span itemprop="name">Code</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">这可能是见过最不像算法题的数学题目了...</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近看到了以前一道 <del>老生常谈</del> 的算法题: </p>
+<blockquote>
+<p>有一个 100 层高的大厦，你手中有两个相同的玻璃球。从这个大厦的某一层扔下玻璃球就会碎。用你手中的这两个玻璃围棋子，找出一个最优的策略，来得知那个临界层面。更进一步：如果有 m 层高的大厦，手中有 n 颗相同的玻璃围棋子呢？</p>
+</blockquote>
+<a id="more"></a>
+
+<p>在阅读了众多论坛大神的分析之后, 觉得这样的问题有一定的深度, 尤其是一上来就给出生涩难懂的解法, 让人摸不着头脑. 于是就想给出一些<strong>サルでも分かる</strong>的分析, 给初窥算法学习的人一个友好的学习环境. (虽然这样说, 但是自己的分析到了最后也出了一些逻辑上的漏洞, 这里抛砖引玉, 希望有人可以指出不足, 相互交流提高)</p>
+<p>从题目出发的算法都是流氓, 这样的学习既不系统, 也没法高效地提升自己的逻辑. 首先对于这样的<em>找出</em>和<em>筛选</em>问题. 先要明确一些前提: (<code>x</code>是次数, <code>m</code>是玻璃球的数量, <code>n</code>是大楼的层数)</p>
+<ul>
+<li><strong>二分法</strong>的效率是最高的, 在有无限玻璃球的情况下, 最快的效率也就在满足算式<code>2 ^ x &lt;= n</code>的<code>min(x)</code>了. </li>
+</ul>
+<p>很明显, 可以看出玻璃球的数量也不一定是越多越好的.</p>
+<p>那么接下来, 我们来看一下题目, 100层楼和两个玻璃球, 最最简单的解法是什么, 那就是只用一个球, 一层层的进行实验, 那么最大的次数<code>max(x)</code>就是100次, 这样只是实现了功能, 但是效率就没法保证了.</p>
+<p>让我们来引入刚才的<strong>二分法</strong>思想, 我们使用玻璃球在50/51层扔下去, 去帮助我们去除一半的候选项(毕竟有可能碎了, 我们不能重复利用了). 这样一来, 我们需要 <code>1 + 50</code>次来实现. 很好, 我们已经把效率提高近了一倍.</p>
+<p>将二分法的思维进行扩展, 变成<code>n分法</code>. 这来一来, 我们就隐隐知道这种算法的本质了. 例如分成10组,每组10个. 第一个球的使命就是来确定是那一组的, 我们把每组的最后一个遍历成员作为组的遍历对象, 即第一个球从10层, 20层, 30层…100层扔下, 那么最终小球碎了(也许没碎, 但是我们这个层次完成了, 小球的使命也结束了), 我们也能知道是那一组的需要进行逐个遍历的. 第二个小球在该组内逐个遍历, 最终在两个小球的帮助(两层检索)下, 我们最多需要 <code>10 + 9</code>次, 若是把楼层拆成满足等式<code>a * b = 100</code>, 那么需要遍历<code>a + b - 1</code>(这里为什么要-1是细节问题, 如果没想明白可以先不管)</p>
+<p>似乎问题已经迎刃而解了, <strong>当且仅当</strong><code>a = b</code>时, 该组内的遍历成员数量可以达到最大. 100层楼两个玻璃球, 至多19次就可以完成. 太棒了, 我们又将效率提升了一大截.</p>
+<p>如何理解玻璃球会碎了这个概念, 我觉得现在讲和不讲都是不太好的, 所以这一段文字能理解就先理解, 不能理解等讲完了请一定回来看一下. 我在这里把球碎了理解为一个层次的结束, 在一个球进行<em>遍历</em>的时候, 我们的层次只有一次, 所以当找到结果的时候, 也是层次结束的时候. 在使用两个球的时候, 我们设计两个层次去筛选, 所以碎不碎这个状态不需要去注意(如果100层中必定会有一层会让小球破碎,那么最大遍历次数就是99, 也就是说一定是在100层碎的, 甚至不用去让小球测试), 而是提醒我们可以利用的最大层次. </p>
+<p>那么, 我们是不是可以扩展问题了? 如果给我们3个小球, 那么就应该是… <code>5 * 5 * 4</code>所以最快是14次左右…</p>
+<p>于是乎, 我兴冲冲地跑到论坛, 这样的问题给我来一打, so easy! 等等…两个玻璃球只用了14次? 怎么可能, 看着大神们给出的解释, 我更是云里雾里, 这里我把代码贴出, 让大家品味一下 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMin</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[m+<span class="number">1</span>][n+<span class="number">1</span>];</span><br><span class="line">	<span class="comment">// -----初始化变量-----</span></span><br><span class="line">	<span class="comment">// m颗珠子</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; i++) &#123;</span><br><span class="line">		<span class="comment">// n层楼</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= n; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (i == <span class="number">0</span> || j == <span class="number">0</span>) &#123;</span><br><span class="line">				dp[i][j] = <span class="number">0</span>;</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (i == <span class="number">1</span>) &#123;</span><br><span class="line">				dp[i][j] = j;</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (j == <span class="number">1</span>)&#123;</span><br><span class="line">				dp[i][j] = <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// -----迭代-----</span></span><br><span class="line">	<span class="comment">// m颗珠子</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= m; i++) &#123;</span><br><span class="line">		<span class="comment">// n层楼</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">2</span>; j &lt;= n; j++) &#123;</span><br><span class="line">			<span class="keyword">int</span> min = Integer.MAX_VALUE;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= j; k++) &#123;</span><br><span class="line">				<span class="keyword">int</span> max = Math.max(dp[i-<span class="number">1</span>][k-<span class="number">1</span>]+<span class="number">1</span>, dp[i][j-k]+<span class="number">1</span>);</span><br><span class="line">				<span class="keyword">if</span> (max &lt; min) &#123;</span><br><span class="line">					min = max;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			dp[i][j] = min;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> dp[m][n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//原文：https://blog.csdn.net/classicer/article/details/52708880</span></span><br></pre></td></tr></table></figure>
+
+<p>看到这里的时候, 我像我只能说 …我好像懂了,又好像没懂a.</p>
+<p>有问题就得解决, 为什么在两个玻璃球的情况下我们的算法不是最优的. 我觉得我有必要灵魂画师一下</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Code/" rel="tag"># Code</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/25/temp/plusss/" rel="prev" title="如何不使用数学运算符实现加法">
+      <i class="fa fa-chevron-left"></i> 如何不使用数学运算符实现加法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/25/temp/React%20%E5%85%A5%E9%96%80/" rel="next" title="React">
+      React <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LI JIAQI</p>
+  <div class="site-description" itemprop="description">No one knows the site</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LI JIAQI</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
